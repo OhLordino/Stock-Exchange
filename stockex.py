@@ -12,8 +12,8 @@ class StockApp_Tk(tkinter.Tk):
         self.entry = tkinter.Entry(self,text="Enter the company")
         self.entry.insert(0,"Enter the Company")
         self.entry.grid(column=0,row=0,sticky='EWNS')
-        button= tkinter.Button(self, text=u"Check Stock",command=self.OnButtonClick)
-        button.grid(column=1,row=0,sticky='EWNS')
+        self.button= tkinter.Button(self, text=u"Check Stock",command=self.OnButtonClick)
+        self.button.grid(column=1,row=0,sticky='EWNS')
         self.labelVariable = tkinter.StringVar()
         label = tkinter.Label(self,anchor="center",fg="white",bg="#35ad8f",textvariable=self.labelVariable)
         label.grid(column=0,row=1,rowspan=2,columnspan=2,sticky='EWNS')
@@ -26,9 +26,18 @@ class StockApp_Tk(tkinter.Tk):
         
     def OnButtonClick(self):
         user=(self.entry.get())
-        s=Stock(user)
-        self.labelVariable.set("Hello the current price is " + str(s.price)+"\n \n" + " The change in stock value was " + str(s.change) + " since " + str(s.last_trade))
-      
+        try:
+            s=Stock(user)
+        except:
+            self.labelVariable.set("Please enter correct information")
+        if s.change<0:
+            self.button.configure(bg="red")
+        else:
+            self.button.configure(bg="green")
+        try:
+            self.labelVariable.set("Hello the current price is " + str(s.price)+"\n \n" + " The change in stock value was " + str(s.change) + " since " + str(s.last_trade))
+        except:
+            self.labelVariable.set("Please enter correct information")
 
 
     def OnPressEnter(self,event):
